@@ -21,7 +21,7 @@ builder.Services.AddCors(options =>
 });
 
 // Retrieve the connection string from configuration.
-var connectionString = builder.Configuration.GetConnectionString("todolist");
+var connectionString = builder.Configuration.GetConnectionString("todoDB");
 
 // Register the DbContext with a scoped lifetime.
 builder.Services.AddDbContext<ToDoDbContext>(options =>

@@ -19,7 +19,7 @@ public partial class ToDoDbContext : DbContext
     public virtual DbSet<Item> Items { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseMySql("name=todolist",ServerVersion.Parse("8.0.40-mysql"));
+        => optionsBuilder.UseMySql(Environment.GetEnvironmentVariable("todoDB"),ServerVersion.Parse("8.0.40-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
