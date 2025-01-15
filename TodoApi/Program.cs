@@ -5,15 +5,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Enable CORS to allow requests from any origin.
-
+// Define and configure the CORS policy.
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("AllowAllOrigins", policy =>
     {
         policy.AllowAnyOrigin()
               .AllowAnyMethod()
@@ -34,6 +32,12 @@ var app = builder.Build();
 app.UseCors("AllowAllOrigins");
 
 // Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 app.UseAuthorization();
 
 // Map endpoints for CRUD operations.
@@ -57,10 +61,9 @@ app.MapPut("/{id}", async (int id, Item inputItem, ToDoDbContext db) =>
 {
     var item = await db.Items.FindAsync(id);
     if (item is null) return Results.NotFound();
-    Console.WriteLine(inputItem);
-    //item.Name = inputItem.Name;
+
+    // Update item properties here
     item.IsComplete = inputItem.IsComplete;
-    
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
@@ -74,9 +77,5 @@ app.MapDelete("/{id}", async (int id, ToDoDbContext db) =>
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
 app.Run();
