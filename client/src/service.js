@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Set the base URL for the API
 axios.defaults.baseURL = process.env.REACT_APP_API_URL; 
-
+axios.defaults.headers['Content-Type'] = 'application/json';
 // Add a response interceptor
 axios.interceptors.response.use(
   (response) => {
