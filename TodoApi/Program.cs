@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGen();
 // Define and configure the CORS policy.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins", policy =>
+    options.AddDefaultPolicy(policy =>
     {
         policy.AllowAnyOrigin()
               .AllowAnyMethod()
@@ -30,16 +30,16 @@ builder.Services.AddDbContext<ToDoDbContext>(options =>
 var app = builder.Build();
 
 // Use CORS policy.
-app.UseCors("AllowAllOrigins");
-
+app.UseCors();
+app.UseAuthorization();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
-app.UseAuthorization();
+
 
 // Map endpoints for CRUD operations.
 app.MapGet("/", async (ToDoDbContext db) =>
