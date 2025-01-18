@@ -15,11 +15,11 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
+const apiUrl = process.env.REACT_APP_API_URL;
 const api = {
   getTasks: async () => {
     try {
-      const result = await axios.get('/');
+      const result = await axios.get(`${apiUrl}`);
       return result.data;
     } catch (error) {
       throw error;
@@ -29,7 +29,7 @@ const api = {
   addTask: async (name) => {
     try {
       const newTask = { name, isComplete: false };
-      const result = await axios.post('/', newTask);
+      const result = await axios.post(`${apiUrl}`, newTask);
       return result.data;
     } catch (error) {
       throw error;
